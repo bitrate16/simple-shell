@@ -28,7 +28,7 @@ typedef enum { // token_type
 	FILE_IN,          // <
 	ASYNC,            // &
 	CONV,             // |
-	STRING,           // Any string object aka "string" of key aka ls
+	STRING,           // Any string object aka "string" or key aka ls
 	NONE              // None
 } token_type;
 
@@ -44,7 +44,7 @@ typedef struct { // tokenizer_state
 	token tok;
 } tokenizer_state;
 
-// Get's next token. 
+// Gets next token. 
 // Returns 0 if error occurred or EOF, 1 else.
 // Due the error occurs, stste->is_error is set to 1.
 // WARNING: No convertion of escaped characters to the normal.
@@ -713,7 +713,7 @@ jump_end:
 	free(comandline);
 };
 
-// Redirect all signals to currently riven child process.
+// Redirect all signals to child processes.
 void sig_handle(int sig) {
 	signal(SIGINT, &sig_handle);
 	signal(SIGSTOP, &sig_handle);
