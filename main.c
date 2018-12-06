@@ -135,7 +135,7 @@ int get_token(tokenizer_state *state) {
 		int alloc_size = MIN_STRING_SIZE;
 		int str_index = 1;
 		char *buf = calloc(alloc_size, sizeof(char));
-		buf[0] = c;o
+		buf[0] = c;
 		
 		while (1) {
 			c = getchar();
