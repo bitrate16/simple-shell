@@ -476,8 +476,8 @@ void eval() {
 						goto jump_send;
 					}
 					if (dummies[ndummies-1].fin) {
-						// Conveyor entry cant input to a file.
-						printf("Conveyor entry cant input to a file.\n");
+						// Conveyor entry cant input from a file.
+						printf("Conveyor entry cant input from a file.\n");
 						goto jump_send;
 					}
 					
@@ -628,8 +628,8 @@ void eval() {
 					goto jump_send;
 				}
 				if (dummies[ndummies-1].fin) {
-					// Conveyor entry cant input to a file.
-					printf("Conveyor entry cant input to a file.\n");
+					// Conveyor entry cant input from a file.
+					printf("Conveyor entry cant input from a file.\n");
 					goto jump_send;
 				}
 				
