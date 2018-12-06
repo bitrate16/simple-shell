@@ -145,7 +145,7 @@ int get_token(tokenizer_state *state) {
 				// return 0;
 				break;
 			}
-			if (c == EOL) {
+			if (c == EOL || c == '<' || c == '>' || c == '&' || c == '|' || c == '"') {
 				ungetc(c, stdin);
 				break;
 			}
@@ -653,19 +653,19 @@ void eval() {
 						signal(SIGSTOP, SIG_DFL);
 						
 						if (procind == 0) {
-							// printf("Executing %s as primary\n", dummies[procind].name);
+							printf("Executing %s as primary\n", dummies[procind].name);
 							close(1);      // stdout -> pipe::write
 							dup(fd1[1]);   // close pipe::write
 							close(fd1[0]); // disable pipe::read
 							close(fd1[1]); // disable pipe::write
 						} else if (procind == ndummies - 1) {
-							// printf("Executing %s as final\n", dummies[procind].name);
+							printf("Executing %s as final\n", dummies[procind].name);
 							close(0);      // stdin -> pipe::read
 							dup(fd2[0]);   // close pipe::read
 							close(fd2[0]); // disable pipe::read
 							close(fd2[1]); // disable pipe::write
 						} else {
-							// printf("Executing %s as middle\n", dummies[procind].name);
+							printf("Executing %s as middle\n", dummies[procind].name);
 							close(0);      // stdin -> pipe::read
 							dup(fd2[0]);   // close pipe::write
 							close(fd2[0]); // disable pipe::read
