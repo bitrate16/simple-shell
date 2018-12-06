@@ -502,12 +502,42 @@ void eval() {
 							signal(SIGSTOP, SIG_DFL);
 							
 							if (procind == 0) {
+								if (dummies[0].fin) {
+									int fin = open(dummies[0].fin, O_RDONLY);
+									
+									if (fin == -1) {
+										printf("File %s not found.\n", dummies[0].fin);
+										eval_state = 0;
+										goto jump_send;
+									}
+									
+									// fin -> stdin
+									close(0);
+									dup(fin);
+								}
 								// printf("Executing %s as primary\n", dummies[procind].name);
 								close(1);      // stdout -> pipe::write
 								dup(fd1[1]);   // close pipe::write
 								close(fd1[0]); // disable pipe::read
 								close(fd1[1]); // disable pipe::write
 							} else if (procind == ndummies - 1) {
+								if (dummies[ndummies-1].fout) {
+									int fout;
+									if (dummies[ndummies-1].fout_m == APPEND)
+										fout = open(dummies[ndummies-1].fout, O_CREAT | O_WRONLY | O_APPEND);
+									else
+										fout = open(dummies[ndummies-1].fout, O_CREAT | O_WRONLY);
+									
+									if (fout == -1) {
+										printf("File %s not found.\n", dummies[0].fout);
+										eval_state = 0;
+										goto jump_send;
+									}
+									
+									// fout -> stdout
+									close(1);
+									dup(fout);
+								}
 								// printf("Executing %s as final\n", dummies[procind].name);
 								close(0);      // stdin -> pipe::read
 								dup(fd2[0]);   // close pipe::read
@@ -654,19 +684,49 @@ void eval() {
 						signal(SIGSTOP, SIG_DFL);
 						
 						if (procind == 0) {
-							printf("Executing %s as primary\n", dummies[procind].name);
+							if (dummies[0].fin) {
+								int fin = open(dummies[0].fin, O_RDONLY);
+								
+								if (fin == -1) {
+									printf("File %s not found.\n", dummies[0].fin);
+									eval_state = 0;
+									goto jump_send;
+								}
+								
+								// fin -> stdin
+								close(0);
+								dup(fin);
+							}
+							// printf("Executing %s as primary\n", dummies[procind].name);
 							close(1);      // stdout -> pipe::write
 							dup(fd1[1]);   // close pipe::write
 							close(fd1[0]); // disable pipe::read
 							close(fd1[1]); // disable pipe::write
 						} else if (procind == ndummies - 1) {
-							printf("Executing %s as final\n", dummies[procind].name);
+							if (dummies[ndummies-1].fout) {
+								int fout;
+								if (dummies[ndummies-1].fout_m == APPEND)
+									fout = open(dummies[ndummies-1].fout, O_CREAT | O_WRONLY | O_APPEND);
+								else
+									fout = open(dummies[ndummies-1].fout, O_CREAT | O_WRONLY);
+								
+								if (fout == -1) {
+									printf("File %s not found.\n", dummies[0].fout);
+									eval_state = 0;
+									goto jump_send;
+								}
+								
+								// fout -> stdout
+								close(1);
+								dup(fout);
+							}
+							// printf("Executing %s as final\n", dummies[procind].name);
 							close(0);      // stdin -> pipe::read
 							dup(fd2[0]);   // close pipe::read
 							close(fd2[0]); // disable pipe::read
 							close(fd2[1]); // disable pipe::write
 						} else {
-							printf("Executing %s as middle\n", dummies[procind].name);
+							// printf("Executing %s as middle\n", dummies[procind].name);
 							close(0);      // stdin -> pipe::read
 							dup(fd2[0]);   // close pipe::write
 							close(fd2[0]); // disable pipe::read
