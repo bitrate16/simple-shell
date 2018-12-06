@@ -135,7 +135,7 @@ int get_token(tokenizer_state *state) {
 		int alloc_size = MIN_STRING_SIZE;
 		int str_index = 1;
 		char *buf = calloc(alloc_size, sizeof(char));
-		buf[0] = c;
+		buf[0] = c;o
 		
 		while (1) {
 			c = getchar();
@@ -476,8 +476,8 @@ void eval() {
 						goto jump_send;
 					}
 					if (dummies[ndummies-1].fin) {
-						// Conveyor entry cant output to a file.
-						printf("Conveyor entry cant output to a file.\n");
+						// Conveyor entry cant input to a file.
+						printf("Conveyor entry cant input to a file.\n");
 						goto jump_send;
 					}
 					
@@ -628,8 +628,8 @@ void eval() {
 					goto jump_send;
 				}
 				if (dummies[ndummies-1].fin) {
-					// Conveyor entry cant output to a file.
-					printf("Conveyor entry cant output to a file.\n");
+					// Conveyor entry cant input to a file.
+					printf("Conveyor entry cant input to a file.\n");
 					goto jump_send;
 				}
 				
