@@ -193,6 +193,7 @@ token *tokenize() {
 			else
 				free(buf[i].string);
 		free(buf);
+		return NULL;
 	}
 	
 	// Layout: 
